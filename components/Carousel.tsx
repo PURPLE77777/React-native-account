@@ -26,7 +26,7 @@ const CarouselView = ({ data }: { data: IProduct[] }) => {
 	const navigator = useNavigation<NativeStackNavigationProp<ParamListBase>>()
 
 	const addAccount = () => {
-		navigator.navigate('AddSection')
+		navigator.navigate('AddAccount')
 	}
 
 	const carouselItemView = ({ item }: { item: IProduct }) => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import CarouselView from './CarouselView'
+import Carousel from '../components/Carousel'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { ParamListBase } from '@react-navigation/native'
@@ -35,21 +35,21 @@ const MainScreen = () => {
 		}
 	}
 
-	useEffect(() => {
-		fetch('https://fakestoreapi.com/products_f?limit=5')
-			.then(res => res.json())
-			.then(json => {
-				setProducts(json)
-				loadAccount()
-			})
-			.catch(() => {
-				console.log('error of getting data')
-			})
-	}, [])
+	// useEffect(() => {
+	// 	fetch('https://fakestoreapi.com/products_f?limit=5')
+	// 		.then(res => res.json())
+	// 		.then(json => {
+	// 			setProducts(json)
+	// 			loadAccount()
+	// 		})
+	// 		.catch(() => {
+	// 			console.log('error of getting data')
+	// 		})
+	// }, [])
 
 	return (
 		<View style={[styles.mainContainer, comStyles.contBg, comStyles.contPad]}>
-			<CarouselView data={products} />
+			<Carousel data={products} />
 		</View>
 	)
 }

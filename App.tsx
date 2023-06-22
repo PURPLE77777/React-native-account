@@ -1,10 +1,9 @@
-import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import MainScreen from './screens/MainScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import SectionScreen from './screens/SectionScreen'
-import AddSectionScreen from './screens/AddSectionScreen'
+import AddAccountScreen from './screens/AddAccountScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -27,7 +26,8 @@ export default function App() {
 					component={MainScreen}
 					// options={{ headerShown: false }}
 				/>
-				<Stack.Screen name='AddSection' component={AddSectionScreen} />
+
+				<Stack.Screen name='AddAccount' component={AddAccountScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	)
