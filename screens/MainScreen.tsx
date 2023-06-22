@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import CarouselView from './CarouselView'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { ParamListBase } from '@react-navigation/native'
+import comStyles from '../common/styles/containerStyles'
 
 interface IProduct {
 	id: number
@@ -14,6 +17,10 @@ interface IProduct {
 
 const MainScreen = () => {
 	const [products, setProducts] = useState<IProduct[]>([])
+
+	// const goAddSection = () => {
+	// 	navigation.navigate('AddSection')
+	// }
 
 	const loadAccount = async () => {
 		try {
@@ -29,7 +36,7 @@ const MainScreen = () => {
 	}
 
 	useEffect(() => {
-		fetch('https://fakestoreapi.com/productse?limit=5')
+		fetch('https://fakestoreapi.com/products_f?limit=5')
 			.then(res => res.json())
 			.then(json => {
 				setProducts(json)
@@ -41,7 +48,7 @@ const MainScreen = () => {
 	}, [])
 
 	return (
-		<View style={styles.mainContainer}>
+		<View style={[styles.mainContainer, comStyles.contBg, comStyles.contPad]}>
 			<CarouselView data={products} />
 		</View>
 	)
@@ -49,11 +56,8 @@ const MainScreen = () => {
 
 const styles = StyleSheet.create({
 	mainContainer: {
-		flex: 1,
 		alignItems: 'center',
-		justifyContent: 'center',
-		padding: 100,
-		backgroundColor: '#2f2f2f'
+		justifyContent: 'center'
 	},
 	text: {
 		fontSize: 20

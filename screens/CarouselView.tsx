@@ -5,9 +5,12 @@ import {
 	useWindowDimensions,
 	Image,
 	FlatList,
-	ImageBackground
+	ImageBackground,
+	TouchableOpacity
 } from 'react-native'
 import PlusAddAccount from '../assets/plus-add_account.svg'
+import { useNavigation, ParamListBase } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 interface IProduct {
 	id: number
@@ -20,18 +23,26 @@ interface IProduct {
 
 const CarouselView = ({ data }: { data: IProduct[] }) => {
 	const { width: screenWidth, height: screnHeight } = useWindowDimensions()
-	console.log(data, Boolean(data.length))
+	const navigator = useNavigation<NativeStackNavigationProp<ParamListBase>>()
+
+	const addAccount = () => {
+		navigator.navigate('AddSection')
+	}
+
 	const carouselItemView = ({ item }: { item: IProduct }) => {
 		return (
 			<View
 				style={[styles.carouselItem, { width: screenWidth }]}
 				key={item.id.toString()}
 			>
-				<View style={[styles.imageWrapper, { width: screenWidth - 100 }]}>
+				<TouchableOpacity
+					style={[styles.imageWrapper, { width: screenWidth - 100 }]}
+					onPress={addAccount}
+				>
 					<Text style={styles.title}>{item.title}</Text>
 					{/* <ImageBackground style={[styles.image]} source={{ uri: item.image }}>
 					</ImageBackground> */}
-				</View>
+				</TouchableOpacity>
 			</View>
 		)
 	}
@@ -45,33 +56,37 @@ const CarouselView = ({ data }: { data: IProduct[] }) => {
 			pagingEnabled
 		/>
 	) : (
-		<View style={[styles.addAccount, { width: screenWidth }]}>
-			<View style={[styles.addAccountItem, { width: screenWidth - 100 }]}>
+		<View style={[styles.addAccount]}>
+			<TouchableOpacity
+				style={[styles.addAccountItem, { width: screenWidth - 100 }]}
+				onPress={addAccount}
+			>
 				{/* <Image
 					source={require('../assets/plus-add_accounnt.svg')}
 					style={styles.addAccountImage}
 				/> */}
 				<PlusAddAccount
 					style={styles.addAccountImage}
-					width={200}
-					height={200}
+					width={100}
+					height={100}
+					fill={'orange'}
+					// fillOpacity={0.5}
 				/>
 				<Text style={styles.title}>Add Account</Text>
 				{/* <ImageBackground style={[styles.image]} source={{ uri: item.image }}>
 			</ImageBackground> */}
-			</View>
+			</TouchableOpacity>
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
 	carousel: {
-		backgroundColor: 'black',
 		height: 250,
 		flexGrow: 0
 	},
 	carouselItem: {
-		backgroundColor: '#4c4c4c',
+		backgroundColor: '#261D32',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
@@ -96,20 +111,20 @@ const styles = StyleSheet.create({
 	},
 	addAccount: {
 		height: 250,
-		backgroundColor: '#4c4c4c',
+		width: '100%',
+		backgroundColor: '#261D32',
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 	addAccountItem: {
-		backgroundColor: 'blue',
-		alignItems: 'center'
-		// height: 200
-		// justifyContent: 'center'
+		backgroundColor: '#7700FF',
+		alignItems: 'center',
+		borderRadius: 15
 	},
 	addAccountImage: {
 		flex: 1,
-		resizeMode: 'contain',
-		backgroundColor: 'white'
+		resizeMode: 'contain'
+		// backgroundColor: 'white'
 	}
 })
 

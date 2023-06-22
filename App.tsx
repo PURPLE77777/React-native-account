@@ -4,6 +4,7 @@ import MainScreen from './screens/MainScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import SectionScreen from './screens/SectionScreen'
+import AddSectionScreen from './screens/AddSectionScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -12,7 +13,13 @@ export default function App() {
 		<NavigationContainer>
 			<Stack.Navigator
 				initialRouteName='Main'
-				// screenOptions={{ headerShown: false }}
+				screenOptions={{
+					// headerShown: false,
+					headerTintColor: 'white',
+					headerStyle: {
+						backgroundColor: '#5B04AC'
+					}
+				}}
 			>
 				<Stack.Screen name='Section' component={SectionScreen} />
 				<Stack.Screen
@@ -20,6 +27,7 @@ export default function App() {
 					component={MainScreen}
 					// options={{ headerShown: false }}
 				/>
+				<Stack.Screen name='AddSection' component={AddSectionScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	)
