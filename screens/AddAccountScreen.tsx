@@ -4,23 +4,27 @@ import {
 	Text,
 	TouchableHighlight,
 	View,
-	useWindowDimensions,
-	Dimensions
+	useWindowDimensions
 } from 'react-native'
 import comStyles from '../common/styles/containerStyles'
 import { useEffect, useState } from 'react'
 import AddAccount from '../components/AddAccount'
 import AddSection from '../components/AddSection'
 import AddSubsections from '../components/AddSubsections'
+import { SectionsWithSubs } from '../common/types'
 
 const AddAccountScreen = () => {
 	const [step, setStep] = useState<number>(1)
 	const [scrollView, setScrollView] = useState<ScrollView | null>(null)
 
-	const {
-		width: screenWidth,
-		height: screenHeight
-	}: { width: number; height: number } = useWindowDimensions()
+	const [account, setAccount] = useState<string>('')
+	const [password, setPassword] = useState<string>('')
+	const [sections, setSections] = useState<string[]>([])
+	const [sectionsWithSubs, setSectionsWithSubs] = useState<SectionsWithSubs[]>(
+		[]
+	)
+
+	const { width: screenWidth } = useWindowDimensions()
 
 	const goNext = (): void => {
 		setStep(step + 1)
@@ -31,12 +35,20 @@ const AddAccountScreen = () => {
 	}
 
 	useEffect(() => {
-		console.log(`step: ${step}`)
 		scrollView?.scrollTo({ x: screenWidth * (step - 1), animated: true })
 	}, [step])
 
-	const addAccount = (): void => {
-		console.log(`step: ${step}`)
+	// useEffect(() => {
+	// 	setSectionsWithSubs([
+	// 		...sectionsWithSubs,
+	// 		{ section: sections[sections.length - 1], subsections: [] }
+	// 	])
+	// }, [sections])
+
+	useEffect(() => console.log(sectionsWithSubs), [sectionsWithSubs])
+
+	const checkInfo = (): void => {
+		console.log(sectionsWithSubs)
 	}
 
 	return (
@@ -50,9 +62,23 @@ const AddAccountScreen = () => {
 					setScrollView(ref)
 				}}
 			>
-				<AddAccount />
-				<AddSection />
-				<AddSubsections />
+				<AddAccount
+					account={account}
+					setAccount={setAccount}
+					password={password}
+					setPassword={setPassword}
+				/>
+				<AddSection
+					sections={sections}
+					setSections={setSections}
+					sectionsWithSubs={sectionsWithSubs}
+					setSectionsWithSubs={setSectionsWithSubs}
+				/>
+				<AddSubsections
+					sections={sections}
+					sectionsWithSubs={sectionsWithSubs}
+					setSectionsWithSubs={setSectionsWithSubs}
+				/>
 			</ScrollView>
 
 			{step == 1 ? (
@@ -94,12 +120,12 @@ const AddAccountScreen = () => {
 						<TouchableHighlight
 							underlayColor={'#03DAC6'}
 							style={[styles.btnAddAccount, { flex: 1 }]}
-							onPress={addAccount}
+							onPress={checkInfo}
 						>
 							<Text
 								style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 20 }}
 							>
-								Add Account
+								checkInfo
 							</Text>
 						</TouchableHighlight>
 					)}
@@ -116,14 +142,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-between'
 	},
-	scrollWrap: {
-		// height: Dimensions.get('window').height - 150
-	},
+	scrollWrap: {},
 	wrapBtns: {
 		flexDirection: 'row'
 	},
 	btnScrollGo: {
-		// height: 250,
 		backgroundColor: '#3700B3',
 		padding: 15,
 		alignItems: 'center',

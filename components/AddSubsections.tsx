@@ -1,11 +1,10 @@
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import {
 	Alert,
 	ScrollView,
 	StyleSheet,
 	Text,
 	TextInput,
-	TouchableHighlight,
 	TouchableOpacity,
 	View,
 	useWindowDimensions
@@ -13,11 +12,24 @@ import {
 import comStyles from '../common/styles/containerStyles'
 import { randomHexColor } from '../common/utils/randomColor'
 import Cross from '../assets/cross.svg'
+import { SectionsWithSubs } from '../common/types'
 
-const AddSubsectionsScreen = () => {
-	const [subsectionText, setSubsectionText] = useState<string>('')
+type IaddSubsections = {
+	sections: string[]
+	sectionsWithSubs: SectionsWithSubs[]
+	setSectionsWithSubs: Dispatch<SetStateAction<SectionsWithSubs[]>>
+	// subsections: string[]
+	// setSubsections: Dispatch<SetStateAction<string[]>>
+}
+
+const addSubsectionsScreen = ({
+	sections,
+	sectionsWithSubs,
+	setSectionsWithSubs
+}: IaddSubsections) => {
+	const [subsections, setSubsections] = useState<string[]>([])
+	const [subsection, setSubsection] = useState<string>('')
 	const [isSubsectionFocused, setIsSubsectionFocused] = useState<boolean>(false)
-	const [subsections, setSubSections] = useState<string[]>(['fafa', 'vzcvzvzc'])
 	const [colors, setColors] = useState<string[]>([])
 
 	const handleSubsectionFocus = (): void => setIsSubsectionFocused(true)
@@ -29,25 +41,39 @@ const AddSubsectionsScreen = () => {
 		return color
 	}
 
-	const addSubSection = (): void => {
-		if (subsectionText != '') {
-			setColors(prev => [...prev, getColor()])
-			setSubSections(prev => [...prev, subsectionText])
-			setSubsectionText('')
+	const addSubsection = (): void => {
+		if (subsection != '') {
+			setColors([...colors, getColor()])
+			setSubsections([...subsections, subsection])
+			setSubsection('')
 		} else {
 			Alert.alert('Warning', 'Enter subsection')
 		}
 	}
 
 	const deleteSubsection = (ind: number): void => {
-		setSubSections(subsections.filter((_, i) => i != ind))
+		setSubsections(subsections.filter((_, i) => i != ind))
 		setColors(colors.filter((_, i) => i != ind))
 	}
 
-	const {
-		width: screenWidth,
-		height: screenHeight
-	}: { width: number; height: number } = useWindowDimensions()
+	// if selected section hasn't in sections then set subsections to []
+	// useEffect(() => {
+	// 	if (!sections.includes())
+	// 	setSubsections([])
+	// }, [sections])
+
+	useEffect(() => {
+		const newSectionsWithSubs = sectionsWithSubs.map(item => {
+			// enter selected section
+			if (item.section == sections[1]) {
+				return { ...item, subsections: subsections }
+			}
+			return item
+		})
+		setSectionsWithSubs(newSectionsWithSubs)
+	}, [subsections])
+
+	const { width: screenWidth } = useWindowDimensions()
 
 	return (
 		<View style={[styles.container, { width: screenWidth }]}>
@@ -59,7 +85,7 @@ const AddSubsectionsScreen = () => {
 					color: 'white'
 				}}
 			>
-				AddSubsections
+				Add Subsections
 			</Text>
 			<ScrollView style={comStyles.contPad}>
 				<View
@@ -86,7 +112,7 @@ const AddSubsectionsScreen = () => {
 								{text}
 							</Text>
 							<TouchableOpacity
-								style={styles.deleteSubSectionBtn}
+								style={styles.deleteSubsectionBtn}
 								onPress={() => deleteSubsection(ind)}
 							>
 								<View
@@ -108,8 +134,8 @@ const AddSubsectionsScreen = () => {
 						</View>
 					))}
 					<TextInput
-						value={subsectionText}
-						onChangeText={setSubsectionText}
+						value={subsection}
+						onChangeText={setSubsection}
 						placeholder='Enter name of subsection'
 						onFocus={handleSubsectionFocus}
 						onBlur={handleSubsectionBlur}
@@ -127,10 +153,10 @@ const AddSubsectionsScreen = () => {
 						]}
 					/>
 					<TouchableOpacity
-						style={[comStyles.elementBg, styles.addSubSectionBtn]}
-						onPress={addSubSection}
+						style={[comStyles.elementBg, styles.addSubsectionBtn]}
+						onPress={addSubsection}
 					>
-						<Text style={styles.subSectionBtnText}>Add subsection</Text>
+						<Text style={styles.subsectionBtnText}>Add subsection</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>
@@ -138,7 +164,7 @@ const AddSubsectionsScreen = () => {
 	)
 }
 
-export default AddSubsectionsScreen
+export default addSubsectionsScreen
 
 const styles = StyleSheet.create({
 	container: {
@@ -149,7 +175,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	},
-	deleteSubSectionBtn: {
+	deleteSubsectionBtn: {
 		flex: 0.1,
 		backgroundColor: 'transparent',
 		justifyContent: 'center'
@@ -171,7 +197,7 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		padding: 10
 	},
-	deleteSubSectionText: {
+	deletesubsection: {
 		fontSize: 25,
 		color: '#fff'
 	},
@@ -180,10 +206,10 @@ const styles = StyleSheet.create({
 		padding: 20,
 		borderRadius: 10
 	},
-	addSubSectionBtn: {
+	addSubsectionBtn: {
 		height: 40
 	},
-	subSectionBtnText: {
+	subsectionBtnText: {
 		color: '#fff',
 		textAlign: 'center',
 		fontWeight: 'bold',

@@ -5,24 +5,31 @@ import {
 	View,
 	useWindowDimensions
 } from 'react-native'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import comStyles from '../common/styles/containerStyles'
 
-const AddAccount = () => {
-	const [accountText, setAccountText] = useState<string>('')
+type IAddAccount = {
+	account: string
+	setAccount: Dispatch<SetStateAction<string>>
+	password: string
+	setPassword: Dispatch<SetStateAction<string>>
+}
+
+const AddAccount = ({
+	account,
+	setAccount,
+	password,
+	setPassword
+}: IAddAccount) => {
 	const [isAccountFocused, setIsAccountFocused] = useState<boolean>(false)
 	const handleAccountFocus = () => setIsAccountFocused(true)
 	const handleAccountBlur = () => setIsAccountFocused(false)
 
-	const [password, setPassword] = useState<string>('')
 	const [isPasswordFocused, setIsPasswordFocused] = useState<boolean>(false)
-	const handlePasswordFocus = () => setIsPasswordFocused(true)
-	const handlePasswordBlur = () => setIsPasswordFocused(false)
+	const handlePasswordFocus = (): void => setIsPasswordFocused(true)
+	const handlePasswordBlur = (): void => setIsPasswordFocused(false)
 
-	const {
-		width: screenWidth,
-		height: screenHeight
-	}: { width: number; height: number } = useWindowDimensions()
+	const { width: screenWidth } = useWindowDimensions()
 
 	return (
 		<View style={[styles.container, { width: screenWidth }]}>
@@ -38,8 +45,8 @@ const AddAccount = () => {
 			</Text>
 			<View style={[comStyles.wrapperBg, styles.inputsWrapper]}>
 				<TextInput
-					value={accountText}
-					onChangeText={setAccountText}
+					value={account}
+					onChangeText={setAccount}
 					placeholder='Enter name of account'
 					onFocus={handleAccountFocus}
 					onBlur={handleAccountBlur}
