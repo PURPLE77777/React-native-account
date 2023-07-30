@@ -14,7 +14,7 @@ import { randomHexColor } from '../common/utils/randomColor'
 import Cross from '../assets/cross.svg'
 import { SectionsWithSubs } from '../common/types'
 
-type IAddSections = {
+type AddSectionsProps = {
 	sections: string[]
 	setSections: Dispatch<SetStateAction<string[]>>
 	sectionsWithSubs: SectionsWithSubs[]
@@ -26,7 +26,7 @@ const AddSectionScreen = ({
 	setSections,
 	sectionsWithSubs,
 	setSectionsWithSubs
-}: IAddSections) => {
+}: AddSectionsProps) => {
 	const [colors, setColors] = useState<string[]>([])
 
 	const [section, setSection] = useState<string>('')
@@ -34,15 +34,6 @@ const AddSectionScreen = ({
 
 	const handleSubsectionFocus = (): void => setIsSubsectionFocused(true)
 	const handleSubsectionBlur = (): void => setIsSubsectionFocused(false)
-
-	// need to delete in future
-	// const createColors = () => {
-	// 	sections.forEach(() => {
-	// 		setColors([...colors, getColor()])
-	// 	})
-	// }
-	// useEffect(createColors, [])
-	///////////////////
 
 	const getColor = (): string => {
 		let color: string = randomHexColor()
@@ -66,7 +57,6 @@ const AddSectionScreen = ({
 	}
 
 	useEffect(() => {
-		console.log(sections.length, sectionsWithSubs.length)
 		if (sections.length > sectionsWithSubs.length) {
 			setSectionsWithSubs([
 				...sectionsWithSubs,

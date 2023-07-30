@@ -23,6 +23,7 @@
 		"@typescript-eslint/no-empty-interface": "warn",
 		"no-mixed-spaces-and-tabs": "warn",
 		"no-constant-condition": "warn",
-		"react/prop-types": "warn"
+		"react/prop-types": "warn",
+		"no-empty": "warn"
 	}
 }

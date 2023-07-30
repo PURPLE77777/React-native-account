@@ -8,7 +8,7 @@ import {
 import { Dispatch, SetStateAction, useState } from 'react'
 import comStyles from '../common/styles/containerStyles'
 
-type IAddAccount = {
+type AddAccountProps = {
 	account: string
 	setAccount: Dispatch<SetStateAction<string>>
 	password: string
@@ -20,7 +20,7 @@ const AddAccount = ({
 	setAccount,
 	password,
 	setPassword
-}: IAddAccount) => {
+}: AddAccountProps) => {
 	const [isAccountFocused, setIsAccountFocused] = useState<boolean>(false)
 	const handleAccountFocus = () => setIsAccountFocused(true)
 	const handleAccountBlur = () => setIsAccountFocused(false)
@@ -83,8 +83,6 @@ const AddAccount = ({
 	)
 }
 
-export default AddAccount
-
 const styles = StyleSheet.create({
 	container: {
 		paddingStart: 20,
@@ -92,7 +90,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	inputsWrapper: {
-		// marginTop: 20,
 		padding: 20,
 		borderRadius: 10
 	},
@@ -105,3 +102,5 @@ const styles = StyleSheet.create({
 		borderWidth: 2
 	}
 })
+
+export default AddAccount

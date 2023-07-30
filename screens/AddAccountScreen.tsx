@@ -12,6 +12,7 @@ import AddAccount from '../components/AddAccount'
 import AddSection from '../components/AddSection'
 import AddSubsections from '../components/AddSubsections'
 import { SectionsWithSubs } from '../common/types'
+import RegisterAccount from '../components/RegisterAccount'
 
 const AddAccountScreen = () => {
 	const [step, setStep] = useState<number>(1)
@@ -37,13 +38,6 @@ const AddAccountScreen = () => {
 	useEffect(() => {
 		scrollView?.scrollTo({ x: screenWidth * (step - 1), animated: true })
 	}, [step])
-
-	// useEffect(() => {
-	// 	setSectionsWithSubs([
-	// 		...sectionsWithSubs,
-	// 		{ section: sections[sections.length - 1], subsections: [] }
-	// 	])
-	// }, [sections])
 
 	useEffect(() => console.log(sectionsWithSubs), [sectionsWithSubs])
 
@@ -79,6 +73,11 @@ const AddAccountScreen = () => {
 					sectionsWithSubs={sectionsWithSubs}
 					setSectionsWithSubs={setSectionsWithSubs}
 				/>
+				<RegisterAccount
+					account={account}
+					password={password}
+					sectionsWithSubs={sectionsWithSubs}
+				/>
 			</ScrollView>
 
 			{step == 1 ? (
@@ -104,7 +103,7 @@ const AddAccountScreen = () => {
 							Back
 						</Text>
 					</TouchableHighlight>
-					{step == 2 ? (
+					{step != 4 ? (
 						<TouchableHighlight
 							underlayColor={'#43A188A6'}
 							style={[styles.btnScrollGo, { flex: 1 }]}
@@ -125,7 +124,7 @@ const AddAccountScreen = () => {
 							<Text
 								style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 20 }}
 							>
-								checkInfo
+								create Account
 							</Text>
 						</TouchableHighlight>
 					)}
@@ -134,8 +133,6 @@ const AddAccountScreen = () => {
 		</View>
 	)
 }
-
-export default AddAccountScreen
 
 const styles = StyleSheet.create({
 	container: {
@@ -159,3 +156,5 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	}
 })
+
+export default AddAccountScreen
